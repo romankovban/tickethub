@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { EventsList } from '../components/events-list.component';
 import { Layout } from '../components/layout.component';
-import { useGetEventsQuery } from '../api/events';
+import { useGetEventsQuery } from '../modules/events/api/events';
 
 interface HomePageProps {}
 

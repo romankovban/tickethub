@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { GetEventResponseDto } from './dto/get-event-response.dto';
-import { config } from '../core/config';
 import { GetSingleEventResponseDto } from './dto/get-single-event-response.dto';
 import { GetSectorResponseDto } from './dto/get-sector-response.dto';
+import { config } from '../../../core/config';
 
 export const eventsApi = createApi({
   reducerPath: 'eventsApi',

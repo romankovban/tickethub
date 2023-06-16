@@ -1,5 +1,5 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import { eventsApi } from './api/events';
+import { configureStore } from '@reduxjs/toolkit';
+import { eventsApi } from './modules/events/api/events';
 
 export const store = configureStore({
   reducer: {
