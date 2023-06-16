@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 
 export const handlers = [
-  rest.get('/events', (req, res, ctx) => {
+  rest.get('/api/event', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json([
