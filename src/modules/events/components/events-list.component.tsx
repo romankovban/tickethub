@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { EventCard } from './event-card.component';
-import { Event } from '../modules/events/api/dto/get-event-response.dto';
+import { Event } from '../api/dto/get-event-response.dto';
 
 interface EventsListProps {
   events: Event[];
