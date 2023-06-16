@@ -3,6 +3,7 @@ import { rest } from 'msw';
 export const handlers = [
   rest.get('/api/event', (req, res, ctx) => {
     return res(
+      ctx.delay(500),
       ctx.status(200),
       ctx.json([
         {
@@ -103,6 +104,124 @@ export const handlers = [
             id: 2,
             name: 'Teatro Vorterix',
           },
+        },
+      ])
+    );
+  }),
+
+  rest.get('/api/event/:id', (req, res, ctx) => {
+    return res(
+      ctx.delay(500),
+      ctx.status(200),
+      ctx.json({
+        id: 1,
+        name: 'Black Sabbath Cordoba',
+        description:
+          'Conseguí tus entradas para ser parte del final de una de las bandas más legendarias de la historia del Rock and Roll. Black Sabbath dará su ultimo concierto en Cordoba.',
+        image: 'https://cdn.boletius.com/blacksabbath/co_cordoba_new.jpg',
+        thubm: 'https://cdn.boletius.com/blacksabbath/cordoba.jpg',
+        similarEvents: [
+          {
+            id: 1,
+            name: 'Black Sabbath Cordoba',
+            thumb: 'https://cdn.boletius.com/blacksabbath/cordoba.jpg',
+            venue: {
+              id: 1,
+              name: 'DirecTV Arena',
+            },
+          },
+          {
+            id: 5,
+            name: 'Rancid',
+            thumb:
+              'https://cdn.boletius.com/images/1487618253449-test-pos-ran-640x640.jpg',
+            venue: {
+              id: 1,
+              name: 'DirecTV Arena',
+            },
+          },
+          {
+            id: 9,
+            name: 'THE DEAD DAISIES',
+            thumb:
+              'https://cdn.boletius.com/images/1487257772076-test-pos-the-dead-daisies--640x640-rosario-min.jpg',
+            venue: {
+              id: 1,
+              name: 'DirecTV Arena',
+            },
+          },
+          {
+            id: 13,
+            name: 'FACKASS',
+            thumb:
+              'https://cdn.boletius.com/images/1492461208581-test-pos-fackass--640-min.jpg',
+            venue: {
+              id: 1,
+              name: 'DirecTV Arena',
+            },
+          },
+        ],
+        dates: [
+          {
+            id: 3,
+            name: 'Dia 3',
+            date: '2018-04-27T20:46:43Z',
+          },
+          {
+            id: 2,
+            name: 'Dia 2',
+            date: '2018-04-27T20:46:43Z',
+          },
+          {
+            id: 1,
+            name: 'Dia 1',
+            date: '2018-04-27T20:46:43Z',
+          },
+        ],
+        venue: {
+          id: 1,
+          address: 'Av. Olivos 3215, Tortuguitas, Buenos Aires, Argentina',
+          location: {
+            longitude: '-58.7177591',
+            latitude: '-34.4615385',
+          },
+          name: 'DirecTV Arena',
+        },
+      })
+    );
+  }),
+
+  rest.get('/api/eventDate/:dateId/sectors', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json([
+        {
+          id: 2,
+          name: 'Campo VIP',
+        },
+        {
+          id: 5,
+          name: 'Popular',
+        },
+        {
+          id: 3,
+          name: 'Plata Alta',
+        },
+        {
+          id: 1,
+          name: 'Campo',
+        },
+        {
+          id: 6,
+          name: 'Platea Baja',
+        },
+        {
+          id: 4,
+          name: 'Platea VIP',
+        },
+        {
+          id: 7,
+          name: 'Platea Preferencial',
         },
       ])
     );
