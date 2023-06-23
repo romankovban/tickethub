@@ -24,19 +24,24 @@ export const eventOrderSlice = createSlice({
   name: 'eventOrder',
   initialState,
   reducers: {
-    setEventDate: (state, action: PayloadAction<number>) => {
+    setEventDate: (state, action: PayloadAction<number | null>) => {
       state.date = action.payload;
     },
 
-    setEventSector: (state, action: PayloadAction<number>) => {
+    setEventSector: (state, action: PayloadAction<number | null>) => {
       state.sector = action.payload;
     },
 
-    setEventRate: (state, action: PayloadAction<SliceRate>) => {
+    setEventRate: (state, action: PayloadAction<SliceRate | null>) => {
+      if (action.payload === null) {
+        state.rate = null;
+        return;
+      }
+
       state.rate = { ...action.payload };
     },
 
-    setEventQuantity: (state, action: PayloadAction<number>) => {
+    setEventQuantity: (state, action: PayloadAction<number | null>) => {
       state.quantity = action.payload;
     },
   },
