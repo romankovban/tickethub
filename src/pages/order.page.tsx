@@ -1,12 +1,19 @@
 import { FC, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Layout } from '../components/layout.component';
-import { getChosenEventId } from '../modules/events/store/selectors';
-import { useGetSingleEventQuery } from '../modules/events/api/repository';
+import {
+  getChosenEventId,
+  getSelectedQuantity,
+  getSelectedRate,
+} from '../modules/events/store/selectors';
+import {
+  useCreateOrderMutation,
+  useGetSingleEventQuery,
+} from '../modules/events/api/repository';
 import { Input } from '../components/input.component';
 
 interface OrderPageProps {}
@@ -28,16 +35,20 @@ export const OrderPage: FC<OrderPageProps> = ({}) => {
   const navigate = useNavigate();
 
   const chosenEventId = useSelector(getChosenEventId);
+  const selectedRate = useSelector(getSelectedRate);
+  const selectedQuantity = useSelector(getSelectedQuantity);
 
   useEffect(() => {
-    if (!chosenEventId) {
-      // navigate('/', { replace: true });
+    if (!chosenEventId || !selectedRate || !selectedQuantity) {
+      navigate('/', { replace: true });
     }
   }, []);
 
   const event = useGetSingleEventQuery(chosenEventId || 0, {
     skip: !chosenEventId,
   });
+
+  const [createOrder] = useCreateOrderMutation();
 
   const {
     register,
@@ -58,8 +69,30 @@ export const OrderPage: FC<OrderPageProps> = ({}) => {
     resolver: zodResolver(detailsSchema),
   });
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const [fistName, ...restName] = data.name.split(' ');
+      const lastName = restName.join(' ');
+
+      const order = await createOrder({
+        rate: selectedRate!.id,
+        quantity: selectedQuantity!,
+        card: {
+          nameOnCard: data.cardholderName,
+          expires: data.cardExpiration,
+          number: data.cardNumber,
+          cvv: data.cardCvv,
+        },
+        user: {
+          firstName: fistName,
+          lastName: lastName,
+          email: data.email,
+          phone: data.phone,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   const goBack = () => {
@@ -156,7 +189,11 @@ export const OrderPage: FC<OrderPageProps> = ({}) => {
             </button>
           </div>
           <div className="col-xs-6">
-            <button className="btn btn-primary btn-block btn-lg" type="submit">
+            <button
+              className="btn btn-primary btn-block btn-lg"
+              type="submit"
+              disabled={isSubmitting}
+            >
               Pay
             </button>
           </div>

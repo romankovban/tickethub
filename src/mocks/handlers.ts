@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+import { CreateOrderRequestDto } from '../modules/events/api/dto/create-order-request.dto';
 
 export const handlers = [
   rest.get('/api/event', (req, res, ctx) => {
@@ -250,6 +251,25 @@ export const handlers = [
           name: 'Adulto',
         },
       ])
+    );
+  }),
+
+  rest.post('/api/order', async (req, res, ctx) => {
+    const body = await req.json<CreateOrderRequestDto>();
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: 2,
+        quantity: body.quantity,
+        confirmationCode: '94O0PEHTEG',
+        rate: {
+          id: body.rate,
+        },
+        user: body.user,
+        card: body.card,
+        purchaseDate: '2018-04-27T17:22:31Z',
+      })
     );
   }),
 ];

@@ -4,6 +4,8 @@ import { GetEventResponseDto } from './dto/get-event-response.dto';
 import { GetSingleEventResponseDto } from './dto/get-single-event-response.dto';
 import { GetSectorResponseDto } from './dto/get-sector-response.dto';
 import { GetRateBySectorResponseDto } from './dto/get-rate-by-sector-response.dto';
+import { CreateOrderResponseDto } from './dto/create-order-response.dto';
+import { CreateOrderRequestDto } from './dto/create-order-request.dto';
 
 export const eventsApi = createApi({
   reducerPath: 'eventsApi',
@@ -23,6 +25,16 @@ export const eventsApi = createApi({
     getRateBySector: builder.query<GetRateBySectorResponseDto, number>({
       query: (id) => `/api/sectors/${id}/rates`,
     }),
+    createOrder: builder.mutation<
+      CreateOrderResponseDto,
+      CreateOrderRequestDto
+    >({
+      query: (body) => ({
+        url: '/api/order',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -31,4 +43,5 @@ export const {
   useGetSingleEventQuery,
   useLazyGetSectorByEventQuery,
   useLazyGetRateBySectorQuery,
+  useCreateOrderMutation,
 } = eventsApi;
