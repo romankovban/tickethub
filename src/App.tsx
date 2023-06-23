@@ -7,7 +7,7 @@ import { EventPage } from './pages/event.page';
 
 interface AppProps {}
 
-export const App: FC<AppProps> = ({}) => {
+export const App: FC<AppProps> = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>

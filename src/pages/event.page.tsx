@@ -1,16 +1,22 @@
 import { FC } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Layout } from '../components/layout.component';
 import {
   useGetSingleEventQuery,
+  useLazyGetRateBySectorQuery,
   useLazyGetSectorByEventQuery,
 } from '../modules/events/api/repository';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   getSelectedDate,
   getSelectedSector,
+  getSelectedRate,
 } from '../modules/events/store/selectors';
-import { setEventDate, setEventSector } from '../modules/events/store/slice';
+import {
+  setEventDate,
+  setEventSector,
+  setEventRate,
+} from '../modules/events/store/slice';
 
 interface EventPageProps {}
 
@@ -19,10 +25,12 @@ export const EventPage: FC<EventPageProps> = ({}) => {
 
   const event = useGetSingleEventQuery(Number(params.id));
   const [triggerSectorsQuery, sectors] = useLazyGetSectorByEventQuery();
+  const [triggerRateQuery, rates] = useLazyGetRateBySectorQuery();
 
   const dispatch = useDispatch();
   const selectedDate = useSelector(getSelectedDate);
   const selectedSector = useSelector(getSelectedSector);
+  const selectedRate = useSelector(getSelectedRate);
 
   if (event.isLoading) {
     return (
@@ -44,6 +52,15 @@ export const EventPage: FC<EventPageProps> = ({}) => {
   const handleSectorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const sectorId = Number(e.target.value);
     dispatch(setEventSector(sectorId));
+
+    if (!sectorId) return;
+
+    triggerRateQuery(sectorId);
+  };
+
+  const handleRateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const rateId = Number(e.target.value);
+    dispatch(setEventRate(rateId));
   };
 
   return (
@@ -97,14 +114,24 @@ export const EventPage: FC<EventPageProps> = ({}) => {
         </div>
         <div className="col-sm-2">
           <div className="form-group">
-            <select className="form-control" disabled>
-              <option value="">Rate</option>
+            <select
+              className="form-control"
+              disabled={!selectedSector}
+              onChange={handleRateChange}
+              value={String(selectedRate)}
+            >
+              <option value="null">Rate</option>
+              {rates.data?.map((rate) => (
+                <option key={`rate-${rate.id}`} value={rate.id}>
+                  {rate.name}
+                </option>
+              ))}
             </select>
           </div>
         </div>
         <div className="col-sm-2">
           <div className="form-group">
-            <select name="" id="" className="form-control" disabled>
+            <select className="form-control" disabled>
               <option value="">Quantity</option>
             </select>
           </div>

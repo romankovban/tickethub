@@ -5,7 +5,7 @@ import { EventsList } from '../modules/events/components/events-list.component';
 
 interface HomePageProps {}
 
-export const HomePage: FC<HomePageProps> = ({}) => {
+export const HomePage: FC<HomePageProps> = () => {
   const events = useGetEventsQuery({});
 
   if (events.isLoading) {
