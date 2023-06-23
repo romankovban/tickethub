@@ -1,17 +1,26 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Layout } from '../components/layout.component';
 import { useGetSingleEventQuery } from '../modules/events/api/repository';
 
 import { EventForm } from '../modules/events/components/event-form.component';
 import { EventsList } from '../modules/events/components/events-list.component';
+import { useDispatch } from 'react-redux';
+import { setEventId } from '../modules/events/store/slice';
 
 interface EventPageProps {}
 
 export const EventPage: FC<EventPageProps> = ({}) => {
   const params = useParams();
+  const eventId = Number(params.id);
 
-  const event = useGetSingleEventQuery(Number(params.id));
+  const dispatch = useDispatch();
+
+  const event = useGetSingleEventQuery(eventId);
+
+  useEffect(() => {
+    dispatch(setEventId(eventId));
+  }, [eventId]);
 
   if (event.isLoading) {
     return (

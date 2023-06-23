@@ -17,12 +17,13 @@ import {
   getSelectedRate,
   getSelectedSector,
 } from '../store/selectors';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface EventFormProps {}
 
 export const EventForm: FC<EventFormProps> = ({}) => {
   const params = useParams();
+  const navigate = useNavigate();
 
   const event = useGetSingleEventQuery(Number(params.id));
 
@@ -74,6 +75,10 @@ export const EventForm: FC<EventFormProps> = ({}) => {
   const quantityOptions = useMemo(() => {
     return new Array(selectedRate?.max || 0).fill(0);
   }, [selectedRate?.max]);
+
+  const goToCheckout = () => {
+    navigate('/order');
+  };
 
   return (
     <div className="row">
@@ -156,6 +161,7 @@ export const EventForm: FC<EventFormProps> = ({}) => {
             !selectedRate ||
             !selectedQuantity
           }
+          onClick={goToCheckout}
         >
           BUY
         </button>

@@ -11,6 +11,7 @@ export interface EventOrderState {
   sector: number | null;
   rate: SliceRate | null;
   quantity: number | null;
+  eventId: number | null;
 }
 
 const initialState: EventOrderState = {
@@ -18,6 +19,7 @@ const initialState: EventOrderState = {
   sector: null,
   rate: null,
   quantity: null,
+  eventId: null,
 };
 
 export const eventOrderSlice = createSlice({
@@ -44,11 +46,20 @@ export const eventOrderSlice = createSlice({
     setEventQuantity: (state, action: PayloadAction<number | null>) => {
       state.quantity = action.payload;
     },
+
+    setEventId: (state, action: PayloadAction<number | null>) => {
+      state.eventId = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setEventDate, setEventSector, setEventRate, setEventQuantity } =
-  eventOrderSlice.actions;
+export const {
+  setEventDate,
+  setEventSector,
+  setEventRate,
+  setEventQuantity,
+  setEventId,
+} = eventOrderSlice.actions;
 
 export const { reducer: eventOrderReducer } = eventOrderSlice;
