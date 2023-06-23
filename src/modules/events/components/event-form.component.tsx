@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import {
   useGetSingleEventQuery,
   useLazyGetRateBySectorQuery,
@@ -55,13 +55,20 @@ export const EventForm: FC<EventFormProps> = ({}) => {
 
   const handleRateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const rateId = Number(e.target.value);
-    dispatch(setEventRate(rateId));
+    const maxQuantity =
+      rates.data?.find((rate) => rate.id === rateId)?.max || 0;
+    dispatch(setEventRate({ id: rateId, max: maxQuantity }));
   };
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const quantity = Number(e.target.value);
     dispatch(setEventQuantity(quantity));
   };
+
+  const quantityOptions = useMemo(() => {
+    return new Array(selectedRate?.max || 0).fill(0);
+  }, [selectedRate?.max]);
+
   return (
     <div className="row">
       <div className="col-sm-3">
@@ -71,7 +78,7 @@ export const EventForm: FC<EventFormProps> = ({}) => {
             onChange={handleDateChange}
             value={String(selectedDate)}
           >
-            <option value="null">Date</option>
+            <option value="">Date</option>
             {event.data?.dates.map((date) => (
               <option key={`event-date-${date.id}`} value={date.id}>
                 {date.date}
@@ -88,7 +95,7 @@ export const EventForm: FC<EventFormProps> = ({}) => {
             onChange={handleSectorChange}
             value={String(selectedSector)}
           >
-            <option value="null">Sector</option>
+            <option value="">Sector</option>
             {sectors.data?.map((sector) => (
               <option key={`sector-${sector.id}`} value={sector.id}>
                 {sector.name}
@@ -103,12 +110,12 @@ export const EventForm: FC<EventFormProps> = ({}) => {
             className="form-control"
             disabled={!selectedSector}
             onChange={handleRateChange}
-            value={String(selectedRate)}
+            value={String(selectedRate?.id)}
           >
-            <option value="null">Rate</option>
+            <option value="">Rate</option>
             {rates.data?.map((rate) => (
               <option key={`rate-${rate.id}`} value={rate.id}>
-                {rate.name}
+                {rate.name} | {rate.price}
               </option>
             ))}
           </select>
@@ -118,16 +125,19 @@ export const EventForm: FC<EventFormProps> = ({}) => {
         <div className="form-group">
           <select
             className="form-control"
-            disabled={!selectedRate}
+            disabled={!selectedRate?.id}
             onChange={handleQuantityChange}
             value={String(selectedQuantity)}
           >
             <option value="">Quantity</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            {quantityOptions.map((_, index) => (
+              <option
+                key={`quantity-${selectedRate?.id}-${index}`}
+                value={index + 1}
+              >
+                {index + 1}
+              </option>
+            ))}
           </select>
         </div>
       </div>
