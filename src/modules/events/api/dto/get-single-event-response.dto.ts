@@ -29,7 +29,7 @@ interface Date {
   date: string;
 }
 
-interface SimilarEvent {
+export interface SimilarEvent {
   id: number;
   name: string;
   thumb: string;
