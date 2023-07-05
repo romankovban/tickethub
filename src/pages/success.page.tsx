@@ -8,7 +8,7 @@ import {
   getSelectedQuantity,
   getSelectedSector,
 } from '../modules/events/store/selectors';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useGetSingleEventQuery } from '../modules/events/api/repository';
 import { cleanEventOrderState } from '../modules/events/store/slice';
 
@@ -82,9 +82,9 @@ export const SuccessPage: FC<SuccessPageProps> = ({}) => {
         </div>
         <hr />
         <div className="text-right">
-          <a className="btn btn-primary btn-lg" href="index.html" role="button">
+          <Link to="/" className="btn btn-primary btn-lg" role="button">
             Back to home
-          </a>
+          </Link>
         </div>
       </div>
     </Layout>
