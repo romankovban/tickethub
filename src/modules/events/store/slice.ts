@@ -75,14 +75,14 @@ export const eventOrderSlice = createSlice({
     setConfirmationCode: (state, action: PayloadAction<string | null>) => {
       state.confirmationCode = action.payload;
     },
-    cleanEventOrderState: (state) => {
-      state.date = null;
-      state.sector = null;
-      state.rate = null;
-      state.quantity = null;
-      state.eventId = null;
-      state.confirmationCode = null;
-    },
+    cleanEventOrderState: () => initialState,
+    //   state.date = null;
+    //   state.sector = null;
+    //   state.rate = null;
+    //   state.quantity = null;
+    //   state.eventId = null;
+    //   state.confirmationCode = null;
+    // },
   },
 });
 

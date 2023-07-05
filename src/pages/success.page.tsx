@@ -10,6 +10,7 @@ import {
 } from '../modules/events/store/selectors';
 import { useNavigate } from 'react-router-dom';
 import { useGetSingleEventQuery } from '../modules/events/api/repository';
+import { cleanEventOrderState } from '../modules/events/store/slice';
 
 interface SuccessPageProps {}
 
@@ -33,6 +34,12 @@ export const SuccessPage: FC<SuccessPageProps> = ({}) => {
     ) {
       navigate('/', { replace: true });
     }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      dispatch(cleanEventOrderState());
+    };
   }, []);
 
   const event = useGetSingleEventQuery(chosenEventId || 0, {
