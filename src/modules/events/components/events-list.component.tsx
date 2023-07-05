@@ -1,10 +1,9 @@
 import { FC } from 'react';
 import { EventCard } from './event-card.component';
-import { Event } from '../api/dto/get-event-response.dto';
-import { SimilarEvent } from '../api/dto/get-single-event-response.dto';
+import { InternalEvent } from '../domain/event';
 
 interface EventsListProps {
-  events: Event[] | SimilarEvent[];
+  events: InternalEvent[];
 }
 
 export const EventsList: FC<EventsListProps> = ({ events }) => {

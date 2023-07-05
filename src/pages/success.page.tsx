@@ -62,7 +62,7 @@ export const SuccessPage: FC<SuccessPageProps> = ({}) => {
         <hr />
         <div className="media">
           <div className="media-left">
-            <img src={event.data?.image} width="150" className="media-object" />
+            <img src={event.data?.thumb} width="150" className="media-object" />
           </div>
           <div className="media-body">
             <h4 className="media-heading">
