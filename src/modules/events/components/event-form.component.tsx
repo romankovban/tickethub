@@ -25,20 +25,21 @@ export const EventForm: FC<EventFormProps> = ({}) => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const event = useGetSingleEventQuery(Number(params.id));
-
-  const [triggerSectorsQuery, sectors] = useLazyGetSectorByEventQuery();
-  const [triggerRateQuery, rates] = useLazyGetRateBySectorQuery();
-
   const dispatch = useDispatch();
   const selectedDate = useSelector(getSelectedDate);
   const selectedSector = useSelector(getSelectedSector);
   const selectedRate = useSelector(getSelectedRate);
   const selectedQuantity = useSelector(getSelectedQuantity);
 
+  const event = useGetSingleEventQuery(Number(params.id));
+
+  const [triggerSectorsQuery, sectors] = useLazyGetSectorByEventQuery();
+  const [triggerRateQuery, rates] = useLazyGetRateBySectorQuery();
+
   const handleDateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const eventId = Number(e.target.value);
-    dispatch(setEventDate(eventId));
+    const eventDate = e.target.options[e.target.selectedIndex].text;
+    dispatch(setEventDate({ id: eventId, date: eventDate }));
     dispatch(setEventSector(null));
     dispatch(setEventRate(null));
     dispatch(setEventQuantity(null));
@@ -50,7 +51,8 @@ export const EventForm: FC<EventFormProps> = ({}) => {
 
   const handleSectorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const sectorId = Number(e.target.value);
-    dispatch(setEventSector(sectorId));
+    const sectorName = e.target.options[e.target.selectedIndex].text;
+    dispatch(setEventSector({ id: sectorId, name: sectorName }));
     dispatch(setEventRate(null));
     dispatch(setEventQuantity(null));
 
@@ -87,7 +89,7 @@ export const EventForm: FC<EventFormProps> = ({}) => {
           <select
             className="form-control"
             onChange={handleDateChange}
-            value={String(selectedDate)}
+            value={String(selectedDate?.id)}
           >
             <option value="">Date</option>
             {event.data?.dates.map((date) => (
@@ -104,7 +106,7 @@ export const EventForm: FC<EventFormProps> = ({}) => {
             className="form-control"
             disabled={!selectedDate}
             onChange={handleSectorChange}
-            value={String(selectedSector)}
+            value={String(selectedSector?.id)}
           >
             <option value="">Sector</option>
             {sectors.data?.map((sector) => (

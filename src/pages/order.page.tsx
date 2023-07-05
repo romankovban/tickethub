@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,6 +15,7 @@ import {
   useGetSingleEventQuery,
 } from '../modules/events/api/repository';
 import { Input } from '../components/input.component';
+import { setConfirmationCode } from '../modules/events/store/slice';
 
 interface OrderPageProps {}
 
@@ -33,6 +34,7 @@ type DetailsSchemaValues = z.infer<typeof detailsSchema>;
 
 export const OrderPage: FC<OrderPageProps> = ({}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const chosenEventId = useSelector(getChosenEventId);
   const selectedRate = useSelector(getSelectedRate);
@@ -89,7 +91,11 @@ export const OrderPage: FC<OrderPageProps> = ({}) => {
           email: data.email,
           phone: data.phone,
         },
-      });
+      }).unwrap();
+
+      dispatch(setConfirmationCode(order.confirmationCode));
+
+      navigate('/success', { replace: true });
     } catch (error) {
       console.log(error);
     }

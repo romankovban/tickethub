@@ -10,3 +10,6 @@ export const getSelectedQuantity = (state: RootState) =>
   state.eventOrder.quantity;
 
 export const getChosenEventId = (state: RootState) => state.eventOrder.eventId;
+
+export const getConfirmationCode = (state: RootState) =>
+  state.eventOrder.confirmationCode;

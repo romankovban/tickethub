@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import { EventPage } from './pages/event.page';
 import { OrderPage } from './pages/order.page';
+import { SuccessPage } from './pages/success.page';
 
 interface AppProps {}
 
@@ -16,6 +17,7 @@ export const App: FC<AppProps> = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/event/:id" element={<EventPage />} />
           <Route path="/order" element={<OrderPage />} />
+          <Route path="/success" element={<SuccessPage />} />
         </Routes>
       </BrowserRouter>
     </Provider>
