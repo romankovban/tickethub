@@ -5,8 +5,12 @@ import { useGetSingleEventQuery } from '../modules/events/api/repository';
 
 import { EventForm } from '../modules/events/components/event-form.component';
 import { EventsList } from '../modules/events/components/events-list.component';
-import { useDispatch } from 'react-redux';
-import { setEventId } from '../modules/events/store/slice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  cleanEventOrderState,
+  setEventId,
+} from '../modules/events/store/slice';
+import { getChosenEventId } from '../modules/events/store/selectors';
 
 interface EventPageProps {}
 
@@ -17,10 +21,18 @@ export const EventPage: FC<EventPageProps> = ({}) => {
   const dispatch = useDispatch();
 
   const event = useGetSingleEventQuery(eventId);
+  const chosenEventId = useSelector(getChosenEventId);
 
   useEffect(() => {
-    dispatch(setEventId(eventId));
-  }, [eventId]);
+    const initEventPage = async () => {
+      if (eventId !== chosenEventId) {
+        await dispatch(cleanEventOrderState());
+        dispatch(setEventId(eventId));
+      }
+    };
+
+    initEventPage();
+  }, [eventId, chosenEventId]);
 
   if (event.isLoading) {
     return (
