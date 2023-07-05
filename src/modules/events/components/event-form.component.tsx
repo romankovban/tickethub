@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import {
   useGetSingleEventQuery,
   useLazyGetRateBySectorQuery,
@@ -35,6 +35,11 @@ export const EventForm: FC<EventFormProps> = ({}) => {
 
   const [triggerSectorsQuery, sectors] = useLazyGetSectorByEventQuery();
   const [triggerRateQuery, rates] = useLazyGetRateBySectorQuery();
+
+  useEffect(() => {
+    triggerSectorsQuery(Number(selectedDate?.id), true);
+    triggerRateQuery(Number(selectedSector?.id), true);
+  }, []);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const eventId = Number(e.target.value);
